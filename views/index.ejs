@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Event finder</title>
+    <link rel="stylesheet" type="text/css" href="/style.css" />
+    <link
+      rel="stylesheet"
+      href="https://use.fontawesome.com/releases/v5.14.0/css/all.css"
+    />
+  </head>
+  <body>
+    <div class="container">
+      <h1>Weather and Events App</h1>
+      
+      <!-- Weather Form -->
+      <form action="/weather" method="get">
+        <input type="text" name="city" placeholder="Enter city name" />
+        <button type="submit">Get Weather</button>
+      </form>
+
+      <!-- Error Message for Weather -->
+      <% if (error) { %>
+        <p class="error"><%= error %></p>
+      <% } %>
+
+      <!-- Display Weather Information -->
+      <% if (weather) { %>
+        <div class="card">
+          <p><i class="fas fa-thermometer-half"></i> <%= weather.main.temp %>&deg;F</p>
+          <p><i class="fas fa-cloud"></i> <%= weather.weather[0].main %></p>
+          <p><i class="fas fa-map-marker-alt"></i> <%= weather.name %>, <%= weather.sys.country %></p>
+        </div>
+      <% } %>
+
+      <hr>
+
+      <!-- Events Form -->
+      <h2>Upcoming Events</h2>
+      <form action="/events" method="get">
+        <button type="submit">Get Events</button>
+      </form>
+
+      <!-- Display Events -->
+      <% if (events) { %>
+        <div class="events">
+          <ul>
+            <% events.forEach(event => { %>
+              <li>
+                <h3><%= event.name %></h3>
+                <p><strong>Date:</strong> <%= event.dates.start.localDate %></p>
+                <p><strong>Venue:</strong> <%= event._embedded.venues[0].name %></p>
+                <p><a href="<%= event.url %>" target="_blank">More Info</a></p>
+              </li>
+            <% }) %>
+          </ul>
+        </div>
+      <% } else if (error) { %>
+        <p class="error"><%= error %></p>
+      <% } else { %>
+        <p>No events found.</p>
+      <% } %>
+    </div>
+  </body>
+</html>
